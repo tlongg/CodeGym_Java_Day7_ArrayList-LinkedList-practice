@@ -3,36 +3,21 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class ProductManager extends Product {
-    private ArrayList<Product> productList = new ArrayList<Product>();
+    private ArrayList<Product> productList;
     private Scanner scanner = new Scanner(System.in);
 
-    public void addProduct() {
-        System.out.println("Input product name: ");
-        String name = scanner.nextLine();
-        double price;
-        while (true) {
-            try {
-                System.out.println("Enter product price:");
-                price = Double.parseDouble(scanner.nextLine());
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid numeric price");
-            }
-        }
+    public ProductManager() {
+        productList = new ArrayList<>();
+    }
+
+    public void addProduct(String name, double price) {
         Product product = new Product(name, price);
         productList.add(product);
     }
 
-    public void updateProduct() {
-        System.out.println("Enter product id to update product");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+    public void updateProduct(int id, String newName, double newPrice) {
         for (Product product : productList) {
             if (product.getId() == id) {
-                System.out.println("Enter new product name");
-                String newName = scanner.nextLine();
-                System.out.println("Enter new product price");
-                double newPrice = scanner.nextDouble();
                 product.setName(newName);
                 product.setPrice(newPrice);
                 break;
@@ -40,9 +25,7 @@ public class ProductManager extends Product {
         }
     }
 
-    public void deleteProduct() {
-        System.out.println("Enter product id to delete product:");
-        int id = scanner.nextInt();
+    public void deleteProduct(int id) {
         productList.removeIf(product -> product.getId() == id);
     }
 
@@ -50,9 +33,7 @@ public class ProductManager extends Product {
         System.out.println(productList);
     }
 
-    public void searchProductByName() {
-        System.out.println("Please enter product name you want to search:");
-        String name = scanner.nextLine();
+    public void searchProductByName(String name) {
         for (Product product : productList) {
             if (product.getName().equalsIgnoreCase(name)) {
                 System.out.println(product);
@@ -87,21 +68,36 @@ public class ProductManager extends Product {
             option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    productManager.addProduct();
+                    scanner.nextLine();
+                    System.out.println("Enter product name: ");
+                    String name = scanner.nextLine();
+                    System.out.println("Enter product price:");
+                    double price = scanner.nextDouble();
+                    productManager.addProduct(name, price);
                     break;
                 case 2:
-
-                    productManager.updateProduct();
+                    System.out.println("Enter product id to update product");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Enter new product name");
+                    String newName = scanner.nextLine();
+                    System.out.println("Enter new product price");
+                    double newPrice = scanner.nextDouble();
+                    productManager.updateProduct(id, newName, newPrice);
                     break;
                 case 3:
-                    productManager.deleteProduct();
+                    System.out.println("Enter product id to delete product:");
+                    id = scanner.nextInt();
+                    productManager.deleteProduct(id);
                     break;
                 case 4:
                     productManager.showProduct();
                     break;
                 case 5:
-                    ;
-                    productManager.searchProductByName();
+                    scanner.nextLine();
+                    System.out.println("Please enter product name you want to search:");
+                    name = scanner.nextLine();
+                    productManager.searchProductByName(name);
                     break;
                 case 6:
                     productManager.sortProductsByPriceAscending();
